@@ -16,40 +16,28 @@ func main() {
 	defer input.Close()
 
 	scanner := bufio.NewScanner(input)
-	scanner.Split(bufio.ScanLines)
 
-	var nums []int
+	var numbers []int
 	for scanner.Scan() {
 		num, err := strconv.Atoi(scanner.Text())
 		if err != nil {
 			panic(err)
 		}
-		nums = append(nums, num)
+		numbers = append(numbers, num)
 	}
 
-	printSlice(nums)
-
+	sums := make(map[int]bool)
 	sum := 0
-	sums := make(map[int]int)
-	sums[0] = 0
 
-	for i := 0; ; {
-		sum += nums[i]
-		_, ok := sums[sum]
-		if ok {
-			fmt.Println(sum)
-			break
-		}
-
-		sums[sum] = sum
-		if i == len(nums)-1 {
-			i = 0
-		} else {
-			i += 1
+	for {
+		for _, num := range numbers {
+			if _, ok := sums[sum]; ok {
+				fmt.Println(sum)
+				os.Exit(0)
+			} else {
+				sums[sum] = true
+			}
+			sum += num
 		}
 	}
-}
-
-func printSlice(s []int) {
-	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
 }
