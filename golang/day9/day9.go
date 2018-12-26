@@ -13,6 +13,9 @@ func main() {
 	fmt.Println(play(448, 71628*100))
 }
 
+//Thanks to fharding1's solution:
+//https://github.com/fharding1/adventofcode-2018/blob/master/day9/main.go
+// I learned about container/ring!
 func play(players, lastValue int) int {
 	scores := make([]int, players)
 	circle := ring.New(1)
