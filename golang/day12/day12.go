@@ -26,10 +26,22 @@ func main() {
 		os.Exit(1)
 	}
 
-	//Part 1
 	environment := initializeEnvironment(string(content))
-	environment.runRules(20)
-	fmt.Println(environment.countPots())
+
+	//Part 1
+	//environment.runRules(20)
+	//fmt.Println(environment.countPots())
+
+	//Part 2 - saw that after about generation 162 it grew by a rate of about 73, so
+	//Which is - 12203 + (50000000000 - 162) * 73
+
+	last := 0
+	for i := 0; i < 1000; i++ {
+		environment.runRules(1)
+		current := environment.countPots()
+		fmt.Printf("Generation: %d, current: %d, last: %d, total: %d\n", i+1, current, last, current-last)
+		last = current
+	}
 }
 
 func initializeEnvironment(content string) Environment {
@@ -54,7 +66,6 @@ func initializeEnvironment(content string) Environment {
 
 func (e *Environment) runRules(generations int) {
 	for g := 0; g < generations; g++ {
-		fmt.Println(g)
 		e.padPlants()
 		for i := 0; i <= len(e.plants)-5; i++ {
 			pattern := e.plants[i : i+5]
